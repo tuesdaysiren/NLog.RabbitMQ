@@ -11,6 +11,8 @@ namespace DemoListener
 {
 	internal class Program
 	{
+		private static object _locker = new object();
+
 		private static void Main(string[] args)
 		{
 			var factory = new ConnectionFactory
@@ -51,7 +53,9 @@ namespace DemoListener
 									if (msg.BasicProperties.IsAppIdPresent())
 										Console.Write(msg.BasicProperties.AppId + " ");
 
-									Console.WriteLine(msg.Body.AsUtf8String());
+									var asUtf8String = msg.Body.AsUtf8String();
+									Console.WriteLine(asUtf8String);
+									WriteToFile(asUtf8String);
 								}
 							}
 						}
@@ -80,6 +84,14 @@ namespace DemoListener
 					Console.WriteLine("Yet another one of RabbitMQ's failure modes - re-connecting...");
 					continue;
 				}
+			}
+		}
+
+		private static void WriteToFile(string body)
+		{
+			lock (_locker)
+			{
+				File.AppendAllLines("log.txt", new[]{body});
 			}
 		}
 	}
