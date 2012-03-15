@@ -130,6 +130,21 @@ namespace NLog.Targets
 			set { if (value != null) _Exchange = value; }
 		}
 
+		private bool _Durable = true;
+
+		/// <summary>
+		/// 	Gets or sets the setting specifying whether the exchange
+		///		is durable (persisted across restarts)
+		/// </summary>
+		/// <remarks>
+		/// 	Default is true
+		/// </remarks>
+		public bool Durable
+		{
+			get { return _Durable; }
+			set { _Durable = value; }
+		}
+
 		/// <summary>
 		/// 	Gets or sets the application id to specify when sending. Defaults to null,
 		/// 	and then IBasicProperties.AppId will be the name of the logger instead.
@@ -276,7 +291,7 @@ namespace NLog.Targets
 				}
 
 				if (_Model != null)
-					_Model.ExchangeDeclare(_Exchange, ExchangeType.Topic);
+					_Model.ExchangeDeclare(_Exchange, ExchangeType.Topic, _Durable);
 			}
 			catch (Exception e)
 			{
