@@ -27,6 +27,7 @@
 					<element name="topic" type="string" minOccurs="0" maxOccurs="1" />
 					<element name="vhost" type="string" minOccurs="0" maxOccurs="1" />
 					<element name="appid" type="string" minOccurs="0" maxOccurs="1" />
+					<element name="durable" type="boolean" minOccurs="0" maxOccurs="1" />
 					<element name="maxBuffer" type="integer" minOccurs="0" maxOccurs="1" />
 					<element name="heartBeatSeconds" type="unsignedShort" minOccurs="0" maxOccurs="1" />
 				</choice>

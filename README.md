@@ -28,6 +28,7 @@ The RabbitMQ target writes asynchronously to a RabbitMQ instance.
 				port="5672"
 				topic="DemoApp.Logging.{0}"
 				vhost="/"
+				durable="false"
 				appid="NLog.RabbitMQ.DemoApp"
 				maxBuffer="10240"
 				heartBeatSeconds="3"
