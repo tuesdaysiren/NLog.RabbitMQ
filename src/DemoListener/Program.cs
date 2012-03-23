@@ -41,7 +41,8 @@ namespace DemoListener
 										{"x-expires", 30*60000} // expire queue after 30 minutes, see http://www.rabbitmq.com/extensions.html
 									};
 
-								m.ExchangeDeclare(exchange, ExchangeType.Topic);
+								m.ExchangeDeclarePassive(exchange);
+								// consuming queue, autogen name
 								var q = m.QueueDeclare("", false, true, false, props);
 								m.QueueBind(q, exchange, "#");
 								m.BasicConsume(q, true, consumer);
