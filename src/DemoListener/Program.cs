@@ -70,19 +70,16 @@ namespace DemoListener
 				catch (EndOfStreamException)
 				{
 					Console.WriteLine("RabbitMQ went down, re-connecting...");
-					continue;
 				}
 				// this happens most of the time
 				catch(IOException)
 				{
 					Console.WriteLine("RabbitMQ went down ungracefully, re-connecting...");
-					continue;
 				}
 				// this happens when one kills erlang (killall -9 erl)
 				catch(OperationInterruptedException)
 				{
 					Console.WriteLine("Yet another one of RabbitMQ's failure modes - re-connecting...");
-					continue;
 				}
 			}
 		}
