@@ -11,6 +11,7 @@ namespace DemoListener
 {
 	internal class Program
 	{
+		private const string ExchangeName = "app-logging";
 		private static object _locker = new object();
 
 		private static void Main(string[] args)
@@ -34,17 +35,16 @@ namespace DemoListener
 							using (var c = factory.CreateConnection())
 							using (var m = c.CreateModel())
 							{
-								var exchange = "app-logging";
 								var consumer = new QueueingBasicConsumer(m);
 								var props = new Dictionary<string, object>()
 									{
 										{"x-expires", 30*60000} // expire queue after 30 minutes, see http://www.rabbitmq.com/extensions.html
 									};
 
-								m.ExchangeDeclarePassive(exchange);
+								m.ExchangeDeclarePassive(ExchangeName);
 								// consuming queue, autogen name
 								var q = m.QueueDeclare("", false, true, false, props);
-								m.QueueBind(q, exchange, "#");
+								m.QueueBind(q, ExchangeName, "#");
 								m.BasicConsume(q, true, consumer);
 
 								while (true)
@@ -80,7 +80,8 @@ namespace DemoListener
 				// this happens when one kills erlang (killall -9 erl)
 				catch(OperationInterruptedException)
 				{
-					Console.WriteLine("Yet another one of RabbitMQ's failure modes - re-connecting...");
+					Console.WriteLine(string.Format("Yet another one of RabbitMQ's failure modes - re-connecting... (you might not have the {0} exchange in your broker)", 
+						ExchangeName));
 				}
 			}
 		}
