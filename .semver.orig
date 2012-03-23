@@ -1,0 +1,10 @@
+--- 
+:major: 0
+<<<<<<< Updated upstream
+:minor: 5
+:patch: 0
+=======
+:minor: 4
+:patch: 1
+>>>>>>> Stashed changes
+:special: ""
