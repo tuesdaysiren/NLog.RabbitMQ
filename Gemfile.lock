@@ -8,6 +8,7 @@ GEM
     semver2 (2.0.0)
 
 PLATFORMS
+  java
   x86-mingw32
 
 DEPENDENCIES

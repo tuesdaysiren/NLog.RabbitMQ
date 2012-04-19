@@ -6,6 +6,7 @@ using System.Text;
 using NLog.Common;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Framing.v0_9_1;
+using MQExchangeType = RabbitMQ.Client.ExchangeType;
 
 namespace NLog.Targets
 {
@@ -129,6 +130,35 @@ namespace NLog.Targets
 			get { return _Exchange; }
 			set { if (value != null) _Exchange = value; }
 		}
+
+        private string _ExchangeType = MQExchangeType.Topic;
+
+        /// <summary>
+        /// 	Gets or sets the exchange type to bind the logger output to.
+        ///     Only support Topic and Fanout
+        /// </summary>
+        /// <remarks>
+        /// 	Default is 'topic'
+        /// </remarks>
+        public string ExchangeType
+        {
+            get { return _ExchangeType; }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    return;
+
+                switch (value)
+                {
+                    case MQExchangeType.Topic:
+                        _ExchangeType = MQExchangeType.Topic;
+                        break;
+                    case MQExchangeType.Fanout:
+                        _ExchangeType = MQExchangeType.Fanout;
+                        break;
+                }
+            }
+        }
 
 		private bool _Durable = true;
 
@@ -291,7 +321,7 @@ namespace NLog.Targets
 				}
 
 				if (_Model != null)
-					_Model.ExchangeDeclare(_Exchange, ExchangeType.Topic, _Durable);
+					_Model.ExchangeDeclare(_Exchange, _ExchangeType, _Durable);
 			}
 			catch (Exception e)
 			{
